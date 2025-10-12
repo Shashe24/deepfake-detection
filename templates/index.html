@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection - AI Image Analyzer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>Deepfake Image Detection</h1>
+                </div>
+                <div class="model-info">
+                    <div class="model-status">
+                        <div class="status-indicator">
+                            <div class="status-dot active"></div>
+                            <span class="status-text">Model Active</span>
+                        </div>
+                        <div class="model-details">
+                            <h3 id="current-model">EfficientNet-B4</h3>
+                            <p class="model-accuracy">Accuracy: <span class="accuracy-value">95.33%</span></p>
+                            <p class="model-precision">Fake Precision: <span class="precision-value">90.06%</span></p>
+                            <p class="model-accuracy">Real Precision: <span class="accuracy-value">98.33%</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-card">
+                    <div class="upload-header">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h2>Upload Image for Analysis</h2>
+                        <p>Drag and drop an image or click to browse</p>
+                    </div>
+                    
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-content">
+                            <i class="fas fa-image"></i>
+                            <p>Choose an image file (JPG, PNG, JPEG)</p>
+                            <p class="file-info">Max size: 16MB</p>
+                        </div>
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                    </div>
+                    
+                    <div class="upload-actions">
+                        <button id="analyze-btn" class="btn btn-primary" disabled>
+                            <i class="fas fa-search"></i>
+                            Analyze Image
+                        </button>
+                        <button id="clear-btn" class="btn btn-secondary" disabled>
+                            <i class="fas fa-times"></i>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="results-section" style="display: none;">
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2>Analysis Results</h2>
+                        <div class="confidence-meter">
+                            <div class="meter-label">Confidence</div>
+                            <div class="meter-bar">
+                                <div class="meter-fill" id="confidence-fill"></div>
+                            </div>
+                            <div class="meter-value" id="confidence-value">0%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-content">
+                        <div class="image-preview">
+                            <img id="preview-image" src="" alt="Uploaded image">
+                        </div>
+                        
+                        <div class="prediction-results">
+                            <div class="prediction-card" id="prediction-card">
+                                <div class="prediction-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <div class="prediction-text">
+                                    <h3 id="prediction-text">Analyzing...</h3>
+                                    <p id="prediction-details">Processing your image</p>
+                                </div>
+                            </div>
+                            
+                            <div class="probability-breakdown">
+                                <h4>Probability Breakdown</h4>
+                                <div class="probability-bars">
+                                    <div class="prob-bar">
+                                        <div class="prob-label">
+                                            <span>Real</span>
+                                            <span id="real-prob">0%</span>
+                                        </div>
+                                        <div class="prob-bar-container">
+                                            <div class="prob-bar-fill real-fill" id="real-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="prob-bar">
+                                        <div class="prob-label">
+                                            <span>Fake</span>
+                                            <span id="fake-prob">0%</span>
+                                        </div>
+                                        <div class="prob-bar-container">
+                                            <div class="prob-bar-fill fake-fill" id="fake-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="forensic-analysis" id="forensic-analysis" style="display: none;">
+                                    <h4>Forensic Analysis</h4>
+                                    <div class="forensic-metrics">
+                                        <div class="metric-item">
+                                            <span class="metric-label">Confidence Level:</span>
+                                            <span class="metric-value" id="confidence-level">Medium</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-label">Forensic Score:</span>
+                                            <span class="metric-value" id="forensic-score">0.0</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-label">Model Prediction:</span>
+                                            <span class="metric-value" id="model-prediction">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loading-overlay" style="display: none;">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Analyzing image...</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Deepfake Detection System. Powered by SSRS.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
