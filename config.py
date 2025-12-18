@@ -23,29 +23,37 @@ REAL_DIR = DATA_DIR / "real"  # Keep for backward compatibility
 FAKE_DIR = DATA_DIR / "fake"  # Keep for backward compatibility
 PROCESSED_DATA_DIR = PROJECT_ROOT / "processed_data"
 
-# Data preprocessing
+# Data preprocessing - Optimized for faster training
 IMAGE_SIZE = (224, 224)
-BATCH_SIZE = 16
-NUM_WORKERS = 0
+BATCH_SIZE = 16  # Reduced for CPU training
+NUM_WORKERS = 0  # Disabled to avoid multiprocessing issues
 
 # Data split ratios
 TRAIN_RATIO = 0.8
 VAL_RATIO = 0.1
 TEST_RATIO = 0.1
 
-# Training configuration
-EPOCHS = 20
+# Training configuration - Optimized for faster training
+EPOCHS = 20  # Reduced epochs for faster training
 LEARNING_RATE = 0.001
 WEIGHT_DECAY = 1e-4
-PATIENCE = 5
+PATIENCE = 5  # Reduced patience for faster convergence
 
-# Model configuration - EfficientNet-B4 only
+# Model configuration - Optimized for faster training
 MODEL_CONFIGS = {
     'efficientnet': {
-        'model_name': 'efficientnet-b4',
+        'model_name': 'efficientnet-b0',  # Smaller model for faster training
         'pretrained': True,
-        'num_classes': 2,
-        'dropout_rate': 0.3
+        'num_classes': 2
+    },
+    'xception': {
+        'pretrained': True,
+        'num_classes': 2
+    },
+    'hybrid_ensemble': {
+        'cnn_backbone': 'efficientnet-b0',  # Smaller backbone
+        'transformer_model': 'google/vit-base-patch16-224',
+        'num_classes': 2
     }
 }
 
@@ -58,7 +66,7 @@ AUGMENTATION_CONFIG = {
     'hue_shift_limit': 10,
     'noise_var_limit': (10.0, 50.0),
     'blur_limit': 3,
-    'p': 0.5
+    'p': 0.5  # Probability of applying augmentation
 }
 
 # Evaluation metrics
@@ -67,13 +75,13 @@ METRICS = ['accuracy', 'precision', 'recall', 'f1', 'auc']
 # Deployment configuration
 API_HOST = "0.0.0.0"
 API_PORT = 8000
-MODEL_PATH = MODELS_DIR / "efficientnet" / "best_model.pth"
+MODEL_PATH = MODELS_DIR / "best_model.pth"
 
 # Input normalization (standardized across all models)
 INPUT_NORMALIZATION = {
     'mean': [0.485, 0.456, 0.406],
     'std': [0.229, 0.224, 0.225],
-    'input_range': [0, 1]
+    'input_range': [0, 1]  # Normalized to [0, 1] range
 }
 
 # File validation settings
@@ -92,7 +100,7 @@ LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
 # Demo model configuration
 DEMO_MODEL_CONFIG = {
-    'model_name': 'efficientnet-b4',
+    'model_name': 'efficientnet-b0',
     'num_classes': 2,
     'pretrained': False,
     'dropout_rate': 0.3,
