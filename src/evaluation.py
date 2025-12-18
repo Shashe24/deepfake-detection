@@ -605,7 +605,7 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     # Evaluate different models
-    model_types = ['efficientnet', 'xception', 'hybrid_ensemble']
+    model_types = ['efficientnet']
     
     for model_type in model_types:
         print(f"\n{'='*50}")

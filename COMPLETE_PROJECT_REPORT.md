@@ -2750,13 +2750,21 @@ All images referenced in this report are located in the project directory. Below
 
 #### A.6 Fast Training Curves
 **File:** `models/efficientnet_fast/training_curves.png`  
+**Alternative Name:** `training_curves_fast.png` (if renamed)  
 **Location:** `models/efficientnet_fast/` directory  
 **Description:**
 - Fast training mode performance (EfficientNet-B0)
 - 4-epoch training progression
-- Comparison with full training
-- Time efficiency visualization
-- **Key Insights:** Fast training performance, optimization results
+- Training and validation loss curves
+- Training and validation accuracy curves
+- F1-score progression
+- Comparison with full training mode
+- Time efficiency visualization (9 minutes vs 7+ hours)
+- **Key Insights:** 
+  - Fast training achieves 75.95% accuracy in just 9 minutes
+  - Demonstrates 98% reduction in training time
+  - Shows trade-off between speed and accuracy
+  - Useful for rapid prototyping and experimentation
 
 #### A.7 Additional Analysis Figures
 
@@ -2937,7 +2945,7 @@ All project images are referenced in Appendix A:
 - ✅ Performance analysis (`performance_analysis.png`)
 - ✅ Class distribution (`processed_data/class_distribution.png`)
 - ✅ Sample images (`processed_data/sample_images.png`)
-- ✅ Fast training curves (`models/efficientnet_fast/training_curves.png`)
+- ✅ Fast training curves (`models/efficientnet_fast/training_curves.png` or `training_curves_fast.png`)
 - ✅ Figure 1 (`Figure_1.png`)
 - ✅ Figure 2 (`Figure_2.png`)
 - ✅ Figure 3 (`Figure_3.png`)

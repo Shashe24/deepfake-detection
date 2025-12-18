@@ -1,0 +1,8 @@
+num1=0
+num2_input =input("enter a number: ")
+try:
+     num2 = int(num2_input)
+     result = num1+num2 
+     print("sum =",result)
+except ValueError:
+     print("invalid input")
