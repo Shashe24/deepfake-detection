@@ -123,7 +123,7 @@ class DeepfakeTrainer:
         self.test_loader = test_loader
         self.config = config
         self.save_dir = Path(save_dir)
-        self.save_dir.mkdir(exist_ok=True)
+        self.save_dir.mkdir(parents=True, exist_ok=True)
         
         # Device setup
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -519,7 +519,7 @@ def main():
     )
     
     # Train different models
-    models_to_train = ['efficientnet', 'xception', 'hybrid_ensemble']
+    models_to_train = ['efficientnet']
     
     for model_type in models_to_train:
         print(f"\n{'='*50}")
